@@ -23,7 +23,7 @@ func (s *Subdomain) dns(o *Options) {
 			result := fmt.Sprintf("[Not Vulnerable] %s\n", s.Url)
 			c := "\u001b[31;1mNot Vulnerable\u001b[0m"
 			out := strings.Replace(result, "Not Vulnerable", c, -1)
-			fmt.Printf(out)
+			fmt.Print(out)
 
 			if o.Output != "" {
 				if chkJSON(o.Output) {
@@ -88,7 +88,7 @@ func NS(domain, output string, verbose bool) {
 	for _, ns := range nameservers {
 		if verbose {
 			msg := fmt.Sprintf("[*] %s: Nameserver is %s\n", domain, ns)
-			fmt.Printf(msg)
+			fmt.Print(msg)
 
 			if output != "" {
 				write(msg, output)
@@ -100,7 +100,7 @@ func NS(domain, output string, verbose bool) {
 
 			if av {
 				msg := fmt.Sprintf("[!] %s's nameserver: %s is available for purchase!\n", domain, ns)
-				fmt.Printf(msg)
+				fmt.Print(msg)
 				if output != "" {
 					write(msg, output)
 				}
