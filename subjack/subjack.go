@@ -1,6 +1,7 @@
 package subjack
 
 import (
+	"embed"
 	"log"
 	"sync"
 )
@@ -17,6 +18,8 @@ type Options struct {
 	Config       string
 	Manual       bool
 	Fingerprints []Fingerprints
+
+	EmeddedContent *embed.FS
 }
 
 type Subdomain struct {
@@ -29,18 +32,18 @@ func Process(o *Options) {
 	var err error
 
 	urls := make(chan *Subdomain, o.Threads*10)
-	
-	if(len(o.Domain) > 0){
+
+	if len(o.Domain) > 0 {
 		list = append(list, o.Domain)
 	} else {
 		list, err = open(o.Wordlist)
 	}
-		
+
 	if err != nil {
 		log.Fatalln(err)
 	}
-	
-	o.Fingerprints = fingerprints(o.Config)
+
+	o.Fingerprints = fingerprints(o)
 
 	wg := new(sync.WaitGroup)
 

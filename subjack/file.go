@@ -3,6 +3,7 @@ package subjack
 import (
 	"bufio"
 	"encoding/json"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -111,8 +112,15 @@ func writeJSON(service, url, output string) {
 	wf.Write(results)
 }
 
-func fingerprints(file string) (data []Fingerprints) {
-	config, err := ioutil.ReadFile(file)
+func fingerprints(opt *Options) (data []Fingerprints) {
+	var config []byte
+	var err error
+
+	if opt.Config == "" {
+		config, err = fs.ReadFile(opt.EmeddedContent, "fingerprints.json")
+	} else {
+		config, err = os.ReadFile(opt.Config)
+	}
 	if err != nil {
 		log.Fatalln(err)
 	}
